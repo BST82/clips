@@ -1,4 +1,5 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, Inject, OnDestroy , PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { FormControl, Validators } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/compat/storage';
@@ -44,17 +45,20 @@ export class UploadComponent implements OnDestroy {
   })
 
   constructor(
+   
     private storage: AngularFireStorage,
     private auth: AngularFireAuth,
     private clipsService: ClipService,
     private router: Router,
-    public ffmpegService: FfmpegService
+    public ffmpegService: FfmpegService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) { 
     auth.user.subscribe(user => this.user = user)
     this.ffmpegService.init()
   }
 
   ngOnDestroy(): void {
+    
     this.task?.cancel()
   }
 
